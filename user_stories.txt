@@ -1,0 +1,16 @@
+
+
+Customer:
+
+  Card contains money
+  Add money to card
+  Not too much money on card
+  Deducts fare from card
+  Touch in and out
+  Minimum cost must be on card
+  Pay on complete
+  Record journey start
+  Record completed trips
+  Record station zones
+  Penalty charge for not touching in/out
+  Calculates correct fare

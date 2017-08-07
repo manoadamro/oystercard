@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+cd "$(dirname "$0")";
+
+/bin/bash --login &&
+
+rvm use 2.4.0 &&
+
+bundle install &&
+
+exit
