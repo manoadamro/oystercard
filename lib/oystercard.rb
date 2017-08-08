@@ -1,38 +1,61 @@
 
-OPENING_BALANCE = 0
 MAX_BALANCE = 90
+MIN_BALANCE = 0
+OPENING_BALANCE = 0
 
-# rubocop:disable Style/MutableConstant
-LIMIT_EXCEEDED = "Balance must not exceed £#{MAX_BALANCE}."
-NO_FUNDS = 'Balance is too low!'
+LIMIT_EXCEEDED = "Balance must not exceed £#{MAX_BALANCE}.".freeze
+NO_FUNDS = 'Balance is too low!'.freeze
+ALREADY_IN_JOURNEY = 'Card is already in journey'.freeze
+NOT_IN_JOURNEY = 'Card not in journey'.freeze
+
+class Journey; end
 
 # in lib/oystercard.rb
 class Oystercard
-  attr_accessor :balance
+  attr_reader :balance, :journeys
 
-  def initialize(opening_balance)
+  def initialize(opening_balance = OPENING_BALANCE)
     @balance = opening_balance
+    @journey = nil
+    @journeys = []
   end
 
   def top_up(amount)
-    return exceeded_limit if @balance + amount > MAX_BALANCE
+    raise LIMIT_EXCEEDED if limit?(@balance + amount)
     @balance += amount
-    true
+    puts "added #{amount} to balance."
+    puts "new balance: #{@balance}."
   end
 
-  def deduct
-    return no_funds if @balance - amount < 0
+  def deduct(amount)
+    raise NO_FUNDS if empty?(@balance - amount)
     @balance -= amount
-    true
+    puts "deducted #{amount} from balance."
+    puts "new balance: #{@balance}."
   end
 
-  private
-
-  def exceeded_limit
-    raise LIMIT_EXCEEDED
+  def touch_in
+    raise ALREADY_IN_JOURNEY if in_journey?
+    @journey = Journey.new
+    puts 'touched in!'
   end
 
-  def no_funds
-    raise NO_FUNDS
+  def touch_out
+    raise NOT_IN_JOURNEY unless in_journey?
+    @journeys << @journey
+    @journey = nil
+    puts 'touched out!'
+  end
+
+  def limit?(amount)
+    amount > MAX_BALANCE
+  end
+
+  def empty?(amount)
+    amount < MIN_BALANCE
+  end
+
+  def in_journey?
+    !@journey.nil?
   end
 end
