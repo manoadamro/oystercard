@@ -1,5 +1,8 @@
 require 'oystercard'
 
+EXAMPLE_STATION = 'aldgate'.freeze
+EXAMPLE_AMOUNT = 5
+
 # rubocop:disable Metrics/BlockLength
 
 # in spec/oystercard_spec.rb
@@ -22,31 +25,20 @@ describe Oystercard do
     it 'should respond to top_up' do
       expect(subject).to respond_to(:top_up)
     end
-    it 'should set opening_balance' do
+    it 'should have opening_balance' do
       expect(subject.balance).to eq(OPENING_BALANCE)
+    end
+    it 'should be able to set a opening balance' do
+      card = Oystercard.new(EXAMPLE_AMOUNT)
+      expect(card.balance).to eq(EXAMPLE_AMOUNT)
     end
     it 'should be able to add to balance' do
       opening_balance = subject.balance
-      subject.top_up(1)
-      expect(subject.balance).to eq(opening_balance + 1)
+      subject.top_up(EXAMPLE_AMOUNT)
+      expect(subject.balance).to eq(opening_balance + EXAMPLE_AMOUNT)
     end
     it 'should not exceed maximum balance' do
-      expect { subject.top_up(91) }.to raise_error(LIMIT_EXCEEDED)
-    end
-  end
-
-  describe '#deduct' do
-    it 'should respond to deduct' do
-      expect(subject).to respond_to(:deduct)
-    end
-    it 'should deduct from balance' do
-      subject.top_up(5)
-      opening_balance = subject.balance
-      subject.deduct(1)
-      expect(subject.balance).to eq(opening_balance - 1)
-    end
-    it 'should not go below zero' do
-      expect { subject.deduct(1) }.to raise_error(NO_FUNDS)
+      expect { subject.top_up(MAX_BALANCE + 1) }.to raise_error(LIMIT_EXCEEDED)
     end
   end
 
@@ -54,8 +46,27 @@ describe Oystercard do
     it 'should respond to in_journey?' do
       expect(subject).to respond_to(:in_journey?)
     end
+
     it 'should not start in journey' do
       expect(subject.in_journey?).to eq(false)
+    end
+  end
+
+  describe '#empty?' do
+    it 'should respond to empty?' do
+      expect(subject).to respond_to(:empty?)
+    end
+  end
+
+  describe '#minimum?' do
+    it 'should respond to empty?' do
+      expect(subject).to respond_to(:minimum?)
+    end
+  end
+
+  describe '#limit?' do
+    it 'should respond to empty?' do
+      expect(subject).to respond_to(:limit?)
     end
   end
 
@@ -65,37 +76,63 @@ describe Oystercard do
     end
 
     it 'should raise error if in journey' do
-      allow(subject).to receive(:in_journey?).and_return(true)
-      expect { subject.touch_in }.to raise_error(ALREADY_IN_JOURNEY)
+      allow(subject).to receive(:in_journey?).and_return(EXAMPLE_STATION)
+      expect { subject.touch_in(EXAMPLE_STATION) }.to(
+        raise_error(ALREADY_IN_JOURNEY)
+      )
     end
 
     it 'should create journey' do
-      subject.touch_in
+      subject.top_up(EXAMPLE_AMOUNT)
+      subject.touch_in(EXAMPLE_STATION)
       expect(subject.in_journey?).to eq(true)
+    end
+
+    it 'should raise error if funds below minimum' do
+      expect { subject.touch_in(EXAMPLE_STATION) }.to(
+        raise_error(MINIMUM_FUNDS_REQUIRED)
+      )
     end
   end
 
   describe '#touch_out' do
+    it 'should have no journeys by default' do
+      expect(subject.journeys.empty?).to eq(true)
+    end
+
     it 'should respond to touch_out' do
       expect(subject).to respond_to(:touch_out)
     end
 
     it 'should raise error unless in journey' do
       allow(subject).to receive(:in_journey?).and_return(false)
-      expect { subject.touch_out }.to raise_error(NOT_IN_JOURNEY)
+      expect { subject.touch_out(EXAMPLE_STATION) }.to(
+        raise_error(NOT_IN_JOURNEY)
+      )
     end
 
     it 'should clear journey' do
-      subject.touch_in
-      subject.touch_out
+      subject.top_up(EXAMPLE_AMOUNT)
+      subject.touch_in(EXAMPLE_STATION)
+      subject.touch_out(EXAMPLE_STATION)
       expect(subject.in_journey?).to eq(false)
     end
 
     it 'should log journey' do
-      journeys = subject.journeys.length
-      subject.touch_in
-      subject.touch_out
-      expect(subject.journeys.length).to eq(journeys + 1)
+      subject.top_up(EXAMPLE_AMOUNT)
+      subject.touch_in(EXAMPLE_STATION)
+      expect { subject.touch_out(EXAMPLE_STATION) }.to(
+        change { subject.journeys.length }.by(1)
+      )
+    end
+
+    it 'should deduct minimum amount from balance' do
+      subject.top_up(EXAMPLE_AMOUNT)
+      subject.touch_in(EXAMPLE_STATION)
+      cost = -JOURNEY_COST
+      expect { subject.touch_out(EXAMPLE_STATION) }.to(
+        change { subject.balance }.by(cost)
+      )
     end
   end
 end
