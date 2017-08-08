@@ -12,6 +12,12 @@ describe Oystercard do
     end
   end
 
+  describe '#journeys' do
+    it 'should respond to balance' do
+      expect(subject).to respond_to(:journeys)
+    end
+  end
+
   describe '#top_up' do
     it 'should respond to top_up' do
       expect(subject).to respond_to(:top_up)
