@@ -1,8 +1,8 @@
 
+require './lib/journey'
+
 MAX_BALANCE = 90
 MIN_BALANCE = 0
-OPENING_BALANCE = 0
-JOURNEY_COST = 1
 
 LIMIT_EXCEEDED = "Balance must not exceed £#{MAX_BALANCE}.".freeze
 NO_FUNDS = 'Balance is too low!'.freeze
@@ -16,12 +16,13 @@ TOUCHED_OUT = 'touched out!'.freeze
 
 # in lib/oystercard.rb
 class Oystercard
-  attr_reader :balance, :journeys
+  attr_reader :balance, :journeys, :current_journey
 
-  def initialize(opening_balance = OPENING_BALANCE)
+  def initialize(opening_balance = MIN_BALANCE)
     @balance = opening_balance
-    @entry_station = nil
+    @current_journey = nil
     @journeys = []
+    puts "Created Oystercard #{self}"
   end
 
   def top_up(amount)
@@ -34,16 +35,15 @@ class Oystercard
   def touch_in(station)
     raise ALREADY_IN_JOURNEY if in_journey?
     raise MINIMUM_FUNDS_REQUIRED unless minimum?
-    @entry_station = station
+    @current_journey = Journey.new(station)
     puts TOUCHED_IN
   end
 
   def touch_out(station)
-    raise NOT_IN_JOURNEY unless in_journey?
-    deduct(JOURNEY_COST)
-    @journeys << { start: @entry_station, end: station }
-    @entry_station = nil
-    puts TOUCHED_OUT
+    @current_journey = Journey.no_touch_in unless in_journey?
+    log_journey(station)
+    deduct(@current_journey.fare)
+    @current_journey = nil
   end
 
   def limit?(amount)
@@ -59,10 +59,16 @@ class Oystercard
   end
 
   def in_journey?
-    !@entry_station.nil?
+    !@current_journey.nil?
   end
 
   private
+
+  def log_journey(exit_station)
+    @journeys << { entry: @current_journey.entry_station, exit: exit_station }
+    puts TOUCHED_OUT
+    puts "journey completed #{@current_journey.entry_station} > #{exit_station}"
+  end
 
   def deduct(amount)
     raise NO_FUNDS if empty?(@balance - amount)
