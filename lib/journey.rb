@@ -24,4 +24,10 @@ class Journey
     @exit_station = station
     self
   end
+
+  private
+
+  def zone_calc
+    (@exit_station.zone - @entry_station.zone).abs + 1    
+  end
 end

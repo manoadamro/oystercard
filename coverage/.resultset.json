@@ -1,7 +1,7 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/adamromano/Documents/GitHub/oystercard/spec/journey_log_spec.rb": [
+      "/Users/lizziehard/challenges/week_2/oystercomplete/oystercard/spec/journey_log_spec.rb": [
         1,
         1,
         null,
@@ -55,7 +55,7 @@
         null,
         null
       ],
-      "/Users/adamromano/Documents/GitHub/oystercard/lib/journey_log.rb": [
+      "/Users/lizziehard/challenges/week_2/oystercomplete/oystercard/lib/journey_log.rb": [
         null,
         null,
         1,
@@ -82,7 +82,7 @@
         null,
         null
       ],
-      "/Users/adamromano/Documents/GitHub/oystercard/lib/journey.rb": [
+      "/Users/lizziehard/challenges/week_2/oystercomplete/oystercard/lib/journey.rb": [
         null,
         1,
         1,
@@ -92,8 +92,8 @@
         1,
         null,
         1,
-        18,
-        18,
+        19,
+        19,
         null,
         null,
         1,
@@ -101,49 +101,34 @@
         null,
         null,
         1,
-        2,
-        2,
+        3,
+        3,
         null,
         null,
         1,
-        5,
-        5,
+        6,
+        6,
+        null,
+        null,
+        1,
+        null,
+        1,
+        1,
         null,
         null
       ],
-      "/Users/adamromano/Documents/GitHub/oystercard/spec/journey_spec.rb": [
+      "/Users/lizziehard/challenges/week_2/oystercomplete/oystercard/spec/journey_spec.rb": [
         1,
         null,
         null,
         null,
         1,
-        8,
-        8,
-        null,
+        9,
         1,
         1,
         1,
-        null,
-        null,
-        1,
-        1,
-        null,
-        null,
-        1,
-        1,
-        null,
-        null,
-        1,
-        1,
-        null,
-        null,
-        null,
-        1,
-        1,
-        1,
-        1,
-        null,
-        null,
+        2,
+        9,
         null,
         1,
         1,
@@ -152,16 +137,48 @@
         null,
         1,
         1,
+        null,
+        null,
+        1,
         1,
         null,
         null,
+        1,
+        1,
+        null,
+        null,
+        null,
+        1,
+        1,
+        1,
+        1,
+        null,
+        null,
+        null,
+        1,
+        1,
+        1,
+        null,
+        null,
+        1,
+        1,
+        1,
+        null,
+        null,
+        1,
+        1,
+        null,
+        null,
+        1,
+        1,
+        1,
         1,
         1,
         null,
         null,
         null
       ],
-      "/Users/adamromano/Documents/GitHub/oystercard/spec/oyster_card_spec.rb": [
+      "/Users/lizziehard/challenges/week_2/oystercomplete/oystercard/spec/oyster_card_spec.rb": [
         1,
         null,
         null,
@@ -300,7 +317,7 @@
         null,
         null
       ],
-      "/Users/adamromano/Documents/GitHub/oystercard/lib/oyster_card.rb": [
+      "/Users/lizziehard/challenges/week_2/oystercomplete/oystercard/lib/oyster_card.rb": [
         1,
         null,
         1,
@@ -360,7 +377,7 @@
         null,
         null
       ],
-      "/Users/adamromano/Documents/GitHub/oystercard/spec/station_spec.rb": [
+      "/Users/lizziehard/challenges/week_2/oystercomplete/oystercard/spec/station_spec.rb": [
         1,
         null,
         1,
@@ -387,7 +404,7 @@
         null,
         null
       ],
-      "/Users/adamromano/Documents/GitHub/oystercard/lib/station.rb": [
+      "/Users/lizziehard/challenges/week_2/oystercomplete/oystercard/lib/station.rb": [
         null,
         null,
         1,
@@ -400,6 +417,6 @@
         null
       ]
     },
-    "timestamp": 1502452100
+    "timestamp": 1502460808
   }
 }

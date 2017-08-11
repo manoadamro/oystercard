@@ -3,7 +3,11 @@ require 'journey'
 # rubocop:disable Metrics/BlockLength
 
 describe Journey do
-  let(:station) { double(:station) }
+  let(:station) { double(:station, :zone =>1) }
+  let(:station2) { double(:station2, :zone => 2) }
+  let(:station3) { double(:station3, :zone => 3) }
+  let(:station4) { double(:station4, :zone => 4) }
+  let(:station5) { double(:station5, :zone => 5) }
   subject { Journey.new(station) }
 
   describe '#initialize' do
@@ -26,8 +30,8 @@ describe Journey do
 
   describe '#start' do
     it 'should set entry_station' do
-      subject.start('station')
-      expect(subject.entry_station).to eq('station')
+      subject.start(station)
+      expect(subject.entry_station).to eq(station)
     end
   end
 
@@ -43,6 +47,13 @@ describe Journey do
 
     it 'should return penalty fare' do
       expect(Journey.new(nil).fare).to eq(PENALTY_FARE)
+    end
+
+    it 'should calculate fare based on zones' do
+      subject.start(station)
+      subject.finish(station5)
+      value = subject.send(:zone_calc)
+      expect(value).to eq 5
     end
   end
 end
