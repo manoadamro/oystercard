@@ -1,32 +1,27 @@
 
-JOURNEY_COST = 1
-FINE_COST = 6
+STANDARD_FARE = 1
+PENALTY_FARE = 6
 
-UNKNOWN_ENTRY = 'unknown'.freeze
-
-# in lib/journey.rb
+#
 class Journey
   attr_reader :entry_station, :exit_station
 
-  def initialize(entry_station, exit_station = nil)
+  def initialize(entry_station = nil)
     @entry_station = entry_station
-    @exit_station = exit_station
+    @exit_station = nil
   end
 
   def fare
-    if @entry_station == UNKNOWN_ENTRY
-      puts "You have been fined £#{FINE_COST} for not touching in!"
-      FINE_COST
-    else
-      JOURNEY_COST
-    end
+    @entry_station.nil? || @exit_station.nil? ? PENALTY_FARE : STANDARD_FARE
   end
 
-  def complete?
-    !@exit_station.nil?
+  def start(entry_station)
+    @entry_station = entry_station
+    self
   end
 
-  def self.no_touch_in
-    Journey.new(UNKNOWN_ENTRY)
+  def finish(station)
+    @exit_station = station
+    self
   end
 end

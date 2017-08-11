@@ -1,7 +1,7 @@
 
 # in lib/station.rb
 class Station
-  attr_reader :name, :zone
+  attr_reader :zone, :name
 
   def initialize(name, zone)
     @name = name
