@@ -10,11 +10,11 @@ EXCEEDED_MIN = 'Balance can not be negative'.freeze
 
 # in lib/oyster_card.rb
 class OysterCard
-  attr_reader :balance, :journey, :journeys
+  attr_reader :balance, :journey, :journey_log
 
   def initialize
     @balance = OPENING_BALANCE
-    @journeys = []
+    @journey_log = []
     @journey = nil
   end
 
@@ -46,7 +46,7 @@ class OysterCard
   private
 
   def log_journey
-    @journeys << @journey
+    @journey_log << @journey
     @journey = nil
   end
 

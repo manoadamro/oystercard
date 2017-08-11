@@ -34,13 +34,13 @@ describe OysterCard do
     end
   end
 
-  describe '#journeys' do
-    it 'should respond to journeys' do
-      expect(subject).to respond_to(:journeys)
+  describe '#journey_log' do
+    it 'should respond to journey_log' do
+      expect(subject).to respond_to(:journey_log)
     end
 
     it 'should start empty' do
-      expect(subject.journeys.length).to eq(0)
+      expect(subject.journey_log.length).to eq(0)
     end
   end
 
@@ -130,7 +130,7 @@ describe OysterCard do
       subject.top_up(5)
       subject.touch_in(station)
       expect { subject.touch_out(station) }.to(
-        change { subject.journeys.length }.by(1)
+        change { subject.journey_log.length }.by(1)
       )
     end
   end
